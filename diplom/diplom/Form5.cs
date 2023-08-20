@@ -1,28 +1,15 @@
 ﻿using diplom.ta_ble;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
-using System.Drawing;
-using System.Linq;
-using System.Runtime.Remoting.Metadata.W3cXsd2001;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
 namespace diplom
 {
     public partial class Form5 : Form
     {
-        SqlDataAdapter adapter = null;
-        DataTable Table = null;
-        private string Key = "DBstr";
-        private SqlConnection Otkr = null;
-        SqlCommand command = null;
+        
         public Form5()
         {
             InitializeComponent();
@@ -50,13 +37,13 @@ namespace diplom
         private void avtohis()
         {
             string prov = $"select * from Users where Login = @Username and Password = @Password";
-            command = new SqlCommand(prov, Otkr);
-            command.Parameters.AddWithValue("@Username", textBox1.Text);
-            command.Parameters.AddWithValue("@Password", textBox2.Text);
-            adapter = new SqlDataAdapter(command);
-            Table = new DataTable();
-            adapter.Fill(Table);
-            if (Table.Rows.Count == 1)
+            Static.command5 = new SqlCommand(prov, Static.Otkr);
+            Static.command5.Parameters.AddWithValue("@Username", textBox1.Text);
+            Static.command5.Parameters.AddWithValue("@Password", textBox2.Text);
+            Static.Adapter5 = new SqlDataAdapter(Static.command5);
+            Static.Table5 = new DataTable();
+            Static.Adapter5.Fill(Static.Table5);
+            if (Static.Table5.Rows.Count == 1)
             {
                 MessageBox.Show("Вы вошли", "Успешно", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 Static.user = textBox1.Text;
@@ -67,7 +54,7 @@ namespace diplom
 
         private void Form5_Load(object sender, EventArgs e)
         {
-            Otkr = new SqlConnection(ConfigurationManager.ConnectionStrings[Key].ConnectionString);
+            Static.Otkr = new SqlConnection(ConfigurationManager.ConnectionStrings[Static.Key].ConnectionString);
         }
     }
 }

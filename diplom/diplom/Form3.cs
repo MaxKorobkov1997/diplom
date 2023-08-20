@@ -1,27 +1,15 @@
 ﻿using diplom.ta_ble;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace diplom
 {
     public partial class Form3 : Form
     {
-        private SqlConnection Otkr = null;
-        private DataSet Dataset = null;
-        private SqlDataAdapter Data = null;
-        private SqlCommandBuilder SqlBilder = null;
         private string Bd_Naim = "Fakultets";
-        private string Key = "DBstr";
         int Delit = 2;
         public Form3()
         {
@@ -52,14 +40,14 @@ namespace diplom
         {
             try
             {
-                Otkr = new SqlConnection(ConfigurationManager.ConnectionStrings[Key].ConnectionString);
-                Otkr.Open();
-                Data = new SqlDataAdapter("SELECT Id,Fakultets,'Delete' AS [Удалить] FROM " + Bd_Naim, Otkr);
-                SqlBilder = new SqlCommandBuilder(Data);
-                SqlBilder.GetDeleteCommand();
-                Dataset = new DataSet();
-                Data.Fill(Dataset, Bd_Naim);
-                dataGridView1.DataSource = Dataset.Tables[Bd_Naim];
+                Static.Otkr3 = new SqlConnection(ConfigurationManager.ConnectionStrings[Static.Key].ConnectionString);
+                Static.Otkr3.Open();
+                Static.Data3 = new SqlDataAdapter("SELECT Id,Fakultets,'Delete' AS [Удалить] FROM " + Bd_Naim, Static.Otkr);
+                Static.SqlBilder3 = new SqlCommandBuilder(Static.Data);
+                Static.SqlBilder3.GetDeleteCommand();
+                Static.Dataset3 = new DataSet();
+                Static.Data3.Fill(Static.Dataset3, Bd_Naim);
+                dataGridView1.DataSource = Static.Dataset3.Tables[Bd_Naim];
                 for (int i = 0; i < dataGridView1.Rows.Count; i++)
                 {
                     DataGridViewLinkCell Linkcel = new DataGridViewLinkCell();
@@ -75,9 +63,9 @@ namespace diplom
         {
             try
             {
-                Dataset.Tables[Bd_Naim].Clear();
-                Data.Fill(Dataset, Bd_Naim);
-                dataGridView1.DataSource = Dataset.Tables[Bd_Naim];
+                Static.Dataset3.Tables[Bd_Naim].Clear();
+                Static.Data3.Fill(Static.Dataset3, Bd_Naim);
+                dataGridView1.DataSource = Static.Dataset3.Tables[Bd_Naim];
                 for (int i = 0; i < dataGridView1.Rows.Count; i++)
                 {
                     DataGridViewLinkCell Linkcel = new DataGridViewLinkCell();
@@ -104,8 +92,8 @@ namespace diplom
                         {
                             int rowIndex = e.RowIndex;
                             dataGridView1.Rows.RemoveAt(rowIndex);
-                            Dataset.Tables[Bd_Naim].Rows[rowIndex].Delete();
-                            Data.Update(Dataset, Bd_Naim);
+                            Static.Dataset3.Tables[Bd_Naim].Rows[rowIndex].Delete();
+                            Static.Data3.Update(Static.Dataset3, Bd_Naim);
                         }
                     }
                 }

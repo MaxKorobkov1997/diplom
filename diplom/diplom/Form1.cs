@@ -4,19 +4,12 @@ using System.Data.SqlClient;
 using System.Windows.Forms;
 using System.Configuration;
 using diplom.ta_ble;
-using System.Data.Common;
 
 namespace diplom
 {
     public partial class Form1 : Form
     {
-        private SqlConnection Otkr = null;
-        private DataSet Dataset = null;
-        private SqlDataAdapter Data = null;
-        private SqlDataAdapter Data1 = null;
-        private SqlCommandBuilder SqlBilder = null;
         private string Bd_Naim = "Jurnals";
-        private string Key = "DBstr";
         int Delit = 4;
         public bool admin = false;
 
@@ -69,15 +62,14 @@ namespace diplom
             try
             {
                 if (zak==false)
-                    Otkr.Close();
-                Otkr.Open();
-                Data = new SqlDataAdapter("SELECT Id,Name,Fakultet,VidGr,'Delete' AS [Удалить] FROM " + Bd_Naim, Otkr);
-                
-                SqlBilder = new SqlCommandBuilder(Data);
-                SqlBilder.GetDeleteCommand();
-                Dataset = new DataSet();
-                Data.Fill(Dataset, Bd_Naim);
-                dataGridView1.DataSource = Dataset.Tables[Bd_Naim];
+                    Static.Otkr.Close();
+                Static.Otkr.Open();
+                Static.Data = new SqlDataAdapter("SELECT Id,Name,Fakultet,VidGr,'Delete' AS [Удалить] FROM " + Bd_Naim, Static.Otkr);
+                Static.SqlBilder = new SqlCommandBuilder(Static.Data);
+                Static.SqlBilder.GetDeleteCommand();
+                Static.Dataset = new DataSet();
+                Static.Data.Fill(Static.Dataset, Bd_Naim);
+                dataGridView1.DataSource = Static.Dataset.Tables[Bd_Naim];
                 for (int i = 0; i < dataGridView1.Rows.Count; i++)
                 {
                     DataGridViewLinkCell Linkcel = new DataGridViewLinkCell();
@@ -95,9 +87,9 @@ namespace diplom
         {
             try
             {
-                Dataset.Tables[Bd_Naim].Clear();
-                Data.Fill(Dataset, Bd_Naim);
-                dataGridView1.DataSource = Dataset.Tables[Bd_Naim];
+                Static.Dataset.Tables[Bd_Naim].Clear();
+                Static.Data.Fill(Static.Dataset, Bd_Naim);
+                dataGridView1.DataSource = Static.Dataset.Tables[Bd_Naim];
                 for (int i = 0; i < dataGridView1.Rows.Count; i++)
                 {
                     DataGridViewLinkCell Linkcel = new DataGridViewLinkCell();
@@ -141,8 +133,8 @@ namespace diplom
                         {
                             int rowIndex = e.RowIndex;
                             dataGridView1.Rows.RemoveAt(rowIndex);
-                            Dataset.Tables[Bd_Naim].Rows[rowIndex].Delete();
-                            Data.Update(Dataset, Bd_Naim);
+                            Static.Dataset.Tables[Bd_Naim].Rows[rowIndex].Delete();
+                            Static.Data.Update(Static.Dataset, Bd_Naim);
                         }
                     }
                 }
@@ -157,7 +149,7 @@ namespace diplom
         private void Form1_Load(object sender, EventArgs e)
         {
             label4.Text = "user";
-            Otkr = new SqlConnection(ConfigurationManager.ConnectionStrings[Key].ConnectionString);
+            Static.Otkr = new SqlConnection(ConfigurationManager.ConnectionStrings[Static.Key].ConnectionString);
             Combobox("[dbo].[Students] ");
             Combobox("[dbo].[Fakultets] ");
             Combobox("[dbo].[Vids] ");
@@ -169,12 +161,12 @@ namespace diplom
             try
             {
                 string sq = "SELECT * FROM "+NameT;
-                using (SqlCommand cmd = new SqlCommand(sq, Otkr))
+                using (SqlCommand cmd = new SqlCommand(sq, Static.Otkr))
                 {
                     cmd.CommandType = CommandType.Text;
                     DataTable table = new DataTable();
-                    Data1 = new SqlDataAdapter(cmd);
-                    Data1.Fill(table);
+                    Static.Data1 = new SqlDataAdapter(cmd);
+                    Static.Data1.Fill(table);
                     switch (NameT)
                     {
                         case "[dbo].[Vids] ":
