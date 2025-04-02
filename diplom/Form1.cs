@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using diplom.ta_ble;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace diplom
 {
@@ -90,8 +91,6 @@ namespace diplom
                     Close();
             }
         }
-
-        
 
         private void button4_Click(object sender, EventArgs e)
         {
@@ -241,6 +240,26 @@ namespace diplom
         private void panel1_MouseUp(object sender, MouseEventArgs e)
         {
             drag = false;
+        }
+
+        private void textBox3_TextChanged(object sender, EventArgs e)
+        {
+            for (int i = 0; i < dataGridView1.Rows.Count; i++)
+            {
+                dataGridView1.Rows[i].Selected = false;
+                for (int j = 0; j < dataGridView1.Columns.Count; j++)
+                {
+                    if (textBox3.Text != "")
+                    { 
+                        if (dataGridView1.Rows[i].Cells[j].Value.ToString().Contains(textBox3.Text))
+                        {
+                            dataGridView1.Rows[i].Selected = true;
+                            break;
+                        }
+                    }
+                        
+                }
+            }
         }
     }
 }
