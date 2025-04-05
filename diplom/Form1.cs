@@ -251,7 +251,7 @@ namespace diplom
                 {
                     if (textBox3.Text != "")
                     { 
-                        if (dataGridView1.Rows[i].Cells[j].Value.ToString().Contains(textBox3.Text))
+                        if (dataGridView1.Rows[i].Cells[j].Value.ToString().IndexOf(textBox3.Text, StringComparison.OrdinalIgnoreCase) !=-1)
                         {
                             dataGridView1.Rows[i].Selected = true;
                             break;
