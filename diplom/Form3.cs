@@ -1,23 +1,13 @@
 ﻿using diplom.ta_ble;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Configuration;
 using System.Data;
-using System.Data.SqlClient;
-using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace diplom
 {
     public partial class Form3 : Form
     {
-        bool drag = false;
-        Point start_point = new Point(0, 0);
         public Form3()
         {
             InitializeComponent();
@@ -57,7 +47,6 @@ namespace diplom
                     dataGridView1.DataSource = Joorn.Fakultets.Select(e => new { e.Id, e.Fakultets }).ToList();
                 DataGridViewButtonColumn newColumn = new DataGridViewButtonColumn();
                 newColumn.HeaderText = "Новый столбец"; // Заголовок
-                newColumn.Name = "newColumn"; // Название столбца
                 newColumn.Text = "Удалить";
                 newColumn.UseColumnTextForButtonValue = true;
                 dataGridView1.Columns.Add(newColumn); // Добавляем столбец к DataGridView
@@ -83,6 +72,19 @@ namespace diplom
                         var users = context.Fakultets.Where(o => o.Id == a).FirstOrDefault();
                         context.Fakultets.Remove(users);
                         context.SaveChanges();
+                        MessageBox.Show(users.Fakultets);
+                        if (MessageBox.Show("Удалить эту строку " + a, "Удаление", MessageBoxButtons.YesNo, MessageBoxIcon.Question) ==
+                    DialogResult.Yes)
+                        {
+                            while (true) {
+                                var users1 = context.Jurnals.Where(o => o.Fakultet == users.Fakultets).FirstOrDefault();
+                                if (users1 == null)
+                                    break;
+                                context.Jurnals.Remove(users1);
+                                context.SaveChanges();
+                            }
+                            
+                        }
                     }
                 }
                 otkritie();
@@ -96,35 +98,6 @@ namespace diplom
         private void Form3_Load(object sender, EventArgs e)
         {
             otkritie();
-        }
-        private void panel1_MouseDown(object sender, MouseEventArgs e)
-        {
-            drag = true;
-            start_point = new Point(e.X, e.Y);
-        }
-
-        private void panel1_MouseMove(object sender, MouseEventArgs e)
-        {
-            if (drag)
-            {
-                Point p = PointToScreen(e.Location);
-                Location = new Point(p.X - start_point.X, p.Y - start_point.Y);
-            }
-        }
-
-        private void panel1_MouseUp(object sender, MouseEventArgs e)
-        {
-            drag = false;
-        }
-
-        private void button2_Click(object sender, EventArgs e)
-        {
-            Close();
-        }
-
-        private void button7_Click(object sender, EventArgs e)
-        {
-            WindowState = FormWindowState.Minimized;
         }
     }
 }

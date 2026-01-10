@@ -18,8 +18,6 @@ namespace diplom
 {
     public partial class Form5 : Form
     {
-        bool drag = false;
-        Point start_point = new Point(0, 0);
         Form1 form1;
         public Form5(Form1 owner)
         {
@@ -57,36 +55,6 @@ namespace diplom
 
         private void Form5_Load(object sender, EventArgs e)
         {
-        }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-            Close();
-        }
-
-        private void button7_Click(object sender, EventArgs e)
-        {
-            WindowState = FormWindowState.Minimized;
-        }
-
-        private void panel1_MouseDown(object sender, MouseEventArgs e)
-        {
-            drag = true;
-            start_point = new Point(e.X, e.Y);
-        }
-
-        private void panel1_MouseMove(object sender, MouseEventArgs e)
-        {
-            if (drag)
-            {
-                Point p = PointToScreen(e.Location);
-                Location = new Point(p.X - start_point.X, p.Y - start_point.Y);
-            }
-        }
-
-        private void panel1_MouseUp(object sender, MouseEventArgs e)
-        {
-            drag = false;
         }
     }
 }

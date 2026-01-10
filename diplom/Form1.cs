@@ -1,17 +1,14 @@
-﻿using System;
+﻿using diplom.ta_ble;
+using System;
 using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
-using diplom.ta_ble;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace diplom
 {
     public partial class Form1 : Form
     {
-        bool drag = false;
-        Point start_point = new Point(0,0);
         public Form1()
         {
             InitializeComponent();
@@ -94,21 +91,18 @@ namespace diplom
 
         private void button4_Click(object sender, EventArgs e)
         {
-            var myForm = new Form2();
-            myForm.Show();
+            new Form2().Show();
         }
 
         private void button5_Click(object sender, EventArgs e)
         {
 
-            var myForm = new Form3();
-            myForm.Show();
+            new Form3().Show();
         }
 
         private void button6_Click(object sender, EventArgs e)
         {
-            var myForm = new Form4();
-            myForm.Show();
+            new Form4().Show();
         }
 
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
@@ -160,7 +154,8 @@ namespace diplom
                     foreach (var length in lengths)
                     {
                         comboBox3.Items.Add(length.vid.ToString());
-                    }                    var lengths1 = Joorn.Fakultets.Select(e => new { e.Fakultets }).ToList();
+                    }                    
+                    var lengths1 = Joorn.Fakultets.Select(e => new { e.Fakultets }).ToList();
                     foreach (var length in lengths1)
                     {
                         comboBox2.Items.Add(length.Fakultets.ToString());
@@ -192,56 +187,6 @@ namespace diplom
             new Form5(this).Show();
         }
 
-        private void button2_MouseEnter(object sender, EventArgs e)
-        {
-            button2.BackColor = Color.Red;
-        }
-
-        private void button2_MouseLeave(object sender, EventArgs e)
-        {
-            button2.BackColor = Color.Silver;
-        }
-
-        private void button7_MouseEnter(object sender, EventArgs e)
-        {
-            button7.BackColor = Color.RoyalBlue;
-        }
-
-        private void button7_MouseLeave(object sender, EventArgs e)
-        {
-            button7.BackColor = Color.Silver;
-        }
-
-        private void button2_Click(object sender, EventArgs e)
-        {
-            Close();
-        }
-
-        private void button7_Click(object sender, EventArgs e)
-        {
-            WindowState = FormWindowState.Minimized;
-        }
-
-        private void panel1_MouseDown(object sender, MouseEventArgs e)
-        {
-            drag = true;
-            start_point = new Point(e.X, e.Y);
-        }
-
-        private void panel1_MouseMove(object sender, MouseEventArgs e)
-        {
-            if (drag) 
-            {
-                Point p = PointToScreen(e.Location);
-                Location = new Point(p.X - start_point.X, p.Y - start_point.Y);
-            }
-        }
-
-        private void panel1_MouseUp(object sender, MouseEventArgs e)
-        {
-            drag = false;
-        }
-
         private void textBox3_TextChanged(object sender, EventArgs e)
         {
             for (int i = 0; i < dataGridView1.Rows.Count; i++)
@@ -257,7 +202,6 @@ namespace diplom
                             break;
                         }
                     }
-                        
                 }
             }
         }

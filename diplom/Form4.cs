@@ -1,22 +1,13 @@
 ﻿using diplom.ta_ble;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Configuration;
 using System.Data;
-using System.Data.SqlClient;
-using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace diplom
 {
     public partial class Form4 : Form
     {
-        bool drag = false;
-        Point start_point = new Point(0, 0);
         public Form4()
         {
             InitializeComponent();
@@ -79,9 +70,19 @@ namespace diplom
                 {
                     using (var context = new DBpodkl())
                     {
-                        var users = context.Fakultets.Where(o => o.Id == a).FirstOrDefault();
-                        context.Fakultets.Remove(users);
+                        var users = context.Vids.Where(o => o.Id == a).FirstOrDefault();
+                        context.Vids.Remove(users);
                         context.SaveChanges();
+                        if (MessageBox.Show("Удалить эту строку " + a, "Удаление", MessageBoxButtons.YesNo, MessageBoxIcon.Question) ==
+                    DialogResult.Yes)
+                            while (true)
+                            {
+                                var users1 = context.Jurnals.Where(o => o.Fakultet == users.vid).FirstOrDefault();
+                                if (users1 == null)
+                                    break;
+                                context.Jurnals.Remove(users1);
+                                context.SaveChanges();
+                            }
                     }
                 }
                 otkritie();
@@ -95,36 +96,6 @@ namespace diplom
         private void Form4_Load(object sender, EventArgs e)
         {
             otkritie();
-        }
-
-        private void button2_Click(object sender, EventArgs e)
-        {
-            Close();
-        }
-
-        private void button7_Click(object sender, EventArgs e)
-        {
-            WindowState = FormWindowState.Minimized;
-        }
-
-        private void panel1_MouseDown(object sender, MouseEventArgs e)
-        {
-            drag = true;
-            start_point = new Point(e.X, e.Y);
-        }
-
-        private void panel1_MouseMove(object sender, MouseEventArgs e)
-        {
-            if (drag)
-            {
-                Point p = PointToScreen(e.Location);
-                Location = new Point(p.X - start_point.X, p.Y - start_point.Y);
-            }
-        }
-
-        private void panel1_MouseUp(object sender, MouseEventArgs e)
-        {
-            drag = false;
         }
     }
 }
