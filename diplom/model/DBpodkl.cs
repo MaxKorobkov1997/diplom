@@ -1,7 +1,5 @@
 ﻿using diplom.ta_ble;
-using System.Collections.Generic;
 using System.Data.Entity;
-using System.Collections.Generic;
 
 namespace diplom
 {

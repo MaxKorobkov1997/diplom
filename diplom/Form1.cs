@@ -1,4 +1,5 @@
-﻿using diplom.ta_ble;
+﻿using diplom.Database_management;
+using diplom.ta_ble;
 using System;
 using System.Data;
 using System.Drawing;
@@ -18,8 +19,8 @@ namespace diplom
         {
             try
             {
-                if (Static.user != "Гость")
-                {
+                //if (Static.user != "Гость")
+                //{
                     if (comboBox1.Text == "")
                         MessageBox.Show("Выберите имя");
                     if (comboBox2.Text == "")
@@ -28,22 +29,12 @@ namespace diplom
                         MessageBox.Show("Выберите социальную группу");
                     else
                     {
-                        using (var context = new DBpodkl())
-                        {
-                            var Joorn = new Jurnal()
-                            {
-                                Name = comboBox1.Text,
-                                Fakultet = comboBox2.Text,
-                                VidGr = comboBox3.Text
-                            };
-                            context.Jurnals.Add(Joorn);
-                            context.SaveChanges();
-                        }
+                        add_bd.Add_jurnal(comboBox1.Text, comboBox2.Text, comboBox3.Text);
                         otkritie();
                     }
-                }
-                else
-                    MessageBox.Show("Пожалуйста войдите в акаунт");
+                //}
+                //else
+                //    MessageBox.Show("Пожалуйста войдите в акаунт");
             }
             catch (Exception ex)
             {
@@ -57,7 +48,7 @@ namespace diplom
             {
                 dataGridView1.Columns.Clear();
                 using (var Joorn = new DBpodkl())
-                    dataGridView1.DataSource = Joorn.Jurnals.Select(e => new { e.Id, e.Name, e.Fakultet, e.VidGr }).ToList();
+                    dataGridView1.DataSource = Joorn.Jurnals.Select(e => new { e.Id, e.Name,e.Id_Neme, e.Fakultet,e.Id_Fakultet, e.VidGr,e.Id_VidGr }).ToList();
                 DataGridViewButtonColumn newColumn = new DataGridViewButtonColumn();
                 newColumn.HeaderText = "Новый столбец"; // Заголовок
                 newColumn.Name = "newColumn"; // Название столбца
@@ -65,8 +56,11 @@ namespace diplom
                 newColumn.UseColumnTextForButtonValue = true;
                 dataGridView1.Columns.Add(newColumn); // Добавляем столбец к DataGridView
                 dataGridView1.Columns[1].HeaderText = "Имя";
-                dataGridView1.Columns[2].HeaderText = "Факультет";
-                dataGridView1.Columns[3].HeaderText = "Группа";
+                dataGridView1.Columns[2].HeaderText = "id";
+                dataGridView1.Columns[3].HeaderText = "Факультет";
+                dataGridView1.Columns[4].HeaderText = "Id факультета";
+                dataGridView1.Columns[5].HeaderText = "Группа";
+                dataGridView1.Columns[6].HeaderText = "Id ввида группы";
                 dataGridView1.Columns[0].Width = 40;
             }
             catch
@@ -113,12 +107,7 @@ namespace diplom
                 if (MessageBox.Show("Удалить эту строку " + a, "Удаление", MessageBoxButtons.YesNo, MessageBoxIcon.Question) ==
                     DialogResult.Yes)
                 {
-                    using (var context = new DBpodkl()) 
-                    {
-                        var users = context.Jurnals.Where(o => o.Id ==a).FirstOrDefault();
-                        context.Jurnals.Remove(users);
-                        context.SaveChanges();
-                    }
+                    Delit.Delit_jurnal(a);
                 }
                 otkritie();
             }
@@ -150,7 +139,7 @@ namespace diplom
                 comboBox2.Items.Clear();
                 using (var Joorn = new DBpodkl())
                 {
-                    var lengths = Joorn.Vids.Select(e => new { e.vid }).ToList();
+                    var lengths = Joorn.Vids.Select(e => new { e.Id, e.vid }).ToList();
                     foreach (var length in lengths)
                     {
                         comboBox3.Items.Add(length.vid.ToString());

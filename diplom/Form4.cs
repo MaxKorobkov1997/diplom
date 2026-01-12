@@ -1,4 +1,5 @@
-﻿using diplom.ta_ble;
+﻿using diplom.Database_management;
+using diplom.ta_ble;
 using System;
 using System.Data;
 using System.Linq;
@@ -19,16 +20,8 @@ namespace diplom
             {
                 if (Static.user != "Гость")
                 {
-                    using (var context = new DBpodkl())
-                    {
-                        var vid = new Vid()
-                        {
-                            vid = textBox1.Text
-                        };
-                        context.Vids.Add(vid);
-                        context.SaveChanges();
-                        otkritie();
-                    }
+                    add_bd.Add_vid(textBox1.Text);
+                    otkritie();
                 }
                 else
                     MessageBox.Show("Пожалуйста войдите в акаунт");
@@ -68,22 +61,20 @@ namespace diplom
                 if (MessageBox.Show("Удалить эту строку " + a, "Удаление", MessageBoxButtons.YesNo, MessageBoxIcon.Question) ==
                     DialogResult.Yes)
                 {
-                    using (var context = new DBpodkl())
-                    {
-                        var users = context.Vids.Where(o => o.Id == a).FirstOrDefault();
-                        context.Vids.Remove(users);
-                        context.SaveChanges();
-                        if (MessageBox.Show("Удалить эту строку " + a, "Удаление", MessageBoxButtons.YesNo, MessageBoxIcon.Question) ==
-                    DialogResult.Yes)
-                            while (true)
+                    Delit.Delit_vidgr(a);
+                    if (MessageBox.Show("Удалить эту строку " + a, "Удаление", MessageBoxButtons.YesNo, MessageBoxIcon.Question) ==
+                DialogResult.Yes)
+                        while (true)
+                        {
+                            using (var context = new DBpodkl())
                             {
-                                var users1 = context.Jurnals.Where(o => o.Fakultet == users.vid).FirstOrDefault();
+                                var users1 = context.Jurnals.Where(o => o.Id_VidGr == a).FirstOrDefault();
                                 if (users1 == null)
                                     break;
-                                context.Jurnals.Remove(users1);
-                                context.SaveChanges();
+                                Delit.Delit_jurnal(users1.Id);
                             }
-                    }
+                        }
+                    
                 }
                 otkritie();
             }
