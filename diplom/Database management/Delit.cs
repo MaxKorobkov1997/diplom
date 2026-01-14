@@ -1,6 +1,4 @@
 ﻿using System.Linq;
-using System.Runtime.Remoting.Contexts;
-using System.Windows.Forms;
 
 namespace diplom.Database_management
 {

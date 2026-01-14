@@ -1,4 +1,6 @@
-﻿namespace diplom.ta_ble
+﻿using System.Collections.Generic;
+
+namespace diplom.ta_ble
 {
     public class User
     {

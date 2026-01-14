@@ -19,8 +19,8 @@ namespace diplom
         {
             try
             {
-                //if (Static.user != "Гость")
-                //{
+                if (Static.user != "Гость")
+                {
                     if (comboBox1.Text == "")
                         MessageBox.Show("Выберите имя");
                     if (comboBox2.Text == "")
@@ -32,9 +32,9 @@ namespace diplom
                         add_bd.Add_jurnal(comboBox1.Text, comboBox2.Text, comboBox3.Text);
                         otkritie();
                     }
-                //}
-                //else
-                //    MessageBox.Show("Пожалуйста войдите в акаунт");
+                }
+                else
+                    MessageBox.Show("Пожалуйста войдите в акаунт");
             }
             catch (Exception ex)
             {
@@ -47,7 +47,7 @@ namespace diplom
             try
             {
                 dataGridView1.Columns.Clear();
-                using (var Joorn = new DBpodkl())
+                using (DBpodkl Joorn = new DBpodkl())
                     dataGridView1.DataSource = Joorn.Jurnals.Select(e => new { e.Id, e.Name,e.Id_Neme, e.Fakultet,e.Id_Fakultet, e.VidGr,e.Id_VidGr }).ToList();
                 DataGridViewButtonColumn newColumn = new DataGridViewButtonColumn();
                 newColumn.HeaderText = "Новый столбец"; // Заголовок
@@ -68,9 +68,9 @@ namespace diplom
                 if (MessageBox.Show("Создать пользоватедя Login = \"maks\",Password = \"123\",", "Ошибка",
                     MessageBoxButtons.YesNo, MessageBoxIcon.Question) ==
                     DialogResult.Yes)
-                    using (var context = new DBpodkl())
+                    using (DBpodkl context = new DBpodkl())
                     {
-                        var users = new User()
+                        User users = new User()
                         {
                             Login = "maks",
                             Password = "123",
@@ -137,7 +137,7 @@ namespace diplom
                 comboBox3.Items.Clear();
                 comboBox1.Items.Clear();
                 comboBox2.Items.Clear();
-                using (var Joorn = new DBpodkl())
+                using (DBpodkl Joorn = new DBpodkl())
                 {
                     var lengths = Joorn.Vids.Select(e => new { e.Id, e.vid }).ToList();
                     foreach (var length in lengths)

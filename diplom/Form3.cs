@@ -1,4 +1,5 @@
 ﻿using diplom.Database_management;
+using diplom.ta_ble;
 using System;
 using System.Data;
 using System.Linq;
@@ -35,7 +36,7 @@ namespace diplom
             try
             {
                 dataGridView1.Columns.Clear();
-                using (var Joorn = new DBpodkl())
+                using (DBpodkl Joorn = new DBpodkl())
                     dataGridView1.DataSource = Joorn.Fakultets.Select(e => new { e.Id, e.Fakultets }).ToList();
                 DataGridViewButtonColumn newColumn = new DataGridViewButtonColumn();
                 newColumn.HeaderText = "Новый столбец"; // Заголовок
@@ -65,9 +66,9 @@ namespace diplom
                         {
                         while (true)
                         {
-                            using (var context = new DBpodkl())
+                            using (DBpodkl context = new DBpodkl())
                             {
-                                var users1 = context.Jurnals.Where(o => o.Id_Fakultet == a).FirstOrDefault();
+                                Jurnal users1 = context.Jurnals.Where(o => o.Id_Fakultet == a).FirstOrDefault();
                                 if (users1 == null)
                                     break;
                                 Delit.Delit_jurnal(users1.Id);
