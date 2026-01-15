@@ -2,6 +2,7 @@
 using diplom.ta_ble;
 using System;
 using System.Data;
+using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -89,6 +90,7 @@ namespace diplom
 
         private void Form2_Load(object sender, EventArgs e)
         {
+            dataGridView1.Font = new Font("Microsoft Sans Serif", 14);
             otkritie();
         }
 

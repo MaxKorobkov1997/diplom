@@ -5,6 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace diplom
 {
@@ -178,19 +179,68 @@ namespace diplom
 
         private void textBox3_TextChanged(object sender, EventArgs e)
         {
-            for (int i = 0; i < dataGridView1.Rows.Count; i++)
+            //for (int i = 0; i < dataGridView1.Rows.Count; i++)
+            //{
+            //    dataGridView1.Rows[i].Selected = false;
+            //    for (int j = 0; j < dataGridView1.Columns.Count; j++)
+            //    {
+            //        if (textBox3.Text != "")
+            //        {
+            //            if (dataGridView1.Rows[i].Cells[j].Value.ToString().IndexOf(textBox3.Text, StringComparison.OrdinalIgnoreCase) != -1)
+            //            {
+            //                dataGridView1.Rows[i].Selected = true;
+            //                break;
+            //            }
+            //        }
+            //    }
+            //}
+            SearchAndHighlightRows(textBox3.Text);
+        }
+
+        private void SearchAndHighlightRows(string searchText)
+        {
+            // 1. Предварительная очистка выделения и проверка входных данных
+            // Используем foreach для более чистого синтаксиса
+            foreach (DataGridViewRow row in dataGridView1.Rows)
             {
-                dataGridView1.Rows[i].Selected = false;
-                for (int j = 0; j < dataGridView1.Columns.Count; j++)
+                row.Selected = false;
+            }
+
+            // Если строка поиска пуста, нет смысла продолжать
+            if (string.IsNullOrEmpty(searchText))
+            {
+                return;
+            }
+
+            // 2. Основной цикл поиска
+            foreach (DataGridViewRow row in dataGridView1.Rows)
+            {
+                // Пропускаем последнюю "новую" строку, если она отображается пользователю
+                if (row.IsNewRow) continue;
+
+                bool foundInRow = false;
+
+                foreach (DataGridViewCell cell in row.Cells)
                 {
-                    if (textBox3.Text != "")
-                    { 
-                        if (dataGridView1.Rows[i].Cells[j].Value.ToString().IndexOf(textBox3.Text, StringComparison.OrdinalIgnoreCase) !=-1)
+                    // 3. Улучшенная проверка: убеждаемся, что значение ячейки не равно null
+                    if (cell.Value != null)
+                    {
+                        // 4. Используем ToLowerInvariant() для сравнения без учета регистра
+                        // (это более эффективно, чем создание нового StringComparison)
+                        string cellValue = cell.Value.ToString();
+                        if (cellValue.IndexOf(searchText, StringComparison.OrdinalIgnoreCase) != -1)
                         {
-                            dataGridView1.Rows[i].Selected = true;
-                            break;
+                            foundInRow = true;
+                            break; // Нашли совпадение в этой строке, можно идти к следующей строке
                         }
                     }
+                }
+
+                if (foundInRow)
+                {
+                    row.Selected = true;
+                    // Дополнительно: можно прокрутить к первой найденной строке
+                    dataGridView1.FirstDisplayedScrollingRowIndex = row.Index;
                 }
             }
         }

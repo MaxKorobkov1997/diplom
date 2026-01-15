@@ -1,4 +1,6 @@
-﻿namespace diplom
+﻿using System.Drawing;
+
+namespace diplom
 {
     static class Static
     {
