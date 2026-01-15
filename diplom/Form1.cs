@@ -86,18 +86,60 @@ namespace diplom
 
         private void button4_Click(object sender, EventArgs e)
         {
-            new Form2().Show();
+            Enabled = false;
+
+            Form2 f = new Form2();
+            f.FormClosed += SecondForm2_FormClosed;
+            f.Show();
+        }
+
+        private void SecondForm2_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            // Активируем главную форму обратно
+            Enabled = true;
+
+            // Отписываемся от события
+            Form2 secondForm = (Form2)sender;
+            secondForm.FormClosed -= SecondForm2_FormClosed;
         }
 
         private void button5_Click(object sender, EventArgs e)
         {
 
-            new Form3().Show();
+            Enabled = false;
+
+            Form3 f = new Form3();
+            f.FormClosed += SecondForm3_FormClosed;
+            f.Show();
+        }
+
+        private void SecondForm3_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            // Активируем главную форму обратно
+            Enabled = true;
+
+            // Отписываемся от события
+            Form3 secondForm = (Form3)sender;
+            secondForm.FormClosed -= SecondForm3_FormClosed;
         }
 
         private void button6_Click(object sender, EventArgs e)
         {
-            new Form4().Show();
+            Enabled = false;
+
+            Form4 f = new Form4();
+            f.FormClosed += SecondForm4_FormClosed;
+            f.Show();
+        }
+
+        private void SecondForm4_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            // Активируем главную форму обратно
+            Enabled = true;
+
+            // Отписываемся от события
+            Form4 secondForm = (Form4)sender;
+            secondForm.FormClosed -= SecondForm4_FormClosed;
         }
 
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
@@ -174,26 +216,25 @@ namespace diplom
 
         private void button9_Click(object sender, EventArgs e)
         {
-            new Form5(this).Show();
+            Enabled = false;
+
+            Form5 f = new Form5(this);
+            f.FormClosed += SecondForm5_FormClosed;
+            f.Show();
+        }
+
+        private void SecondForm5_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            // Активируем главную форму обратно
+            Enabled = true;
+
+            // Отписываемся от события
+            Form5 secondForm = (Form5)sender;
+            secondForm.FormClosed -= SecondForm4_FormClosed;
         }
 
         private void textBox3_TextChanged(object sender, EventArgs e)
         {
-            //for (int i = 0; i < dataGridView1.Rows.Count; i++)
-            //{
-            //    dataGridView1.Rows[i].Selected = false;
-            //    for (int j = 0; j < dataGridView1.Columns.Count; j++)
-            //    {
-            //        if (textBox3.Text != "")
-            //        {
-            //            if (dataGridView1.Rows[i].Cells[j].Value.ToString().IndexOf(textBox3.Text, StringComparison.OrdinalIgnoreCase) != -1)
-            //            {
-            //                dataGridView1.Rows[i].Selected = true;
-            //                break;
-            //            }
-            //        }
-            //    }
-            //}
             SearchAndHighlightRows(textBox3.Text);
         }
 
@@ -240,7 +281,7 @@ namespace diplom
                 {
                     row.Selected = true;
                     // Дополнительно: можно прокрутить к первой найденной строке
-                    dataGridView1.FirstDisplayedScrollingRowIndex = row.Index;
+                    //dataGridView1.FirstDisplayedScrollingRowIndex = row.Index;
                 }
             }
         }
