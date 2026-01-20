@@ -1,9 +1,12 @@
 ﻿using diplom.Database_management;
 using diplom.ta_ble;
 using System;
+using System.Collections.Generic;
 using System.Data;
+using System.Data.Entity.Core.Common.CommandTrees.ExpressionBuilder;
 using System.Drawing;
 using System.Linq;
+using System.Reflection;
 using System.Windows.Forms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
@@ -49,7 +52,7 @@ namespace diplom
             {
                 dataGridView1.Columns.Clear();
                 using (DBpodkl Joorn = new DBpodkl())
-                    dataGridView1.DataSource = Joorn.Jurnals.Select(e => new { e.Id, e.Name,e.Id_Neme, e.Fakultet,e.Id_Fakultet, e.VidGr,e.Id_VidGr }).ToList();
+                    dataGridView1.DataSource = Joorn.Jurnals.Select(e => new { e.Id, e.Name, e.Id_Neme, e.Fakultet, e.Id_Fakultet, e.VidGr, e.Id_VidGr }).ToList();
                 DataGridViewButtonColumn newColumn = new DataGridViewButtonColumn();
                 newColumn.HeaderText = "Новый столбец"; // Заголовок
                 newColumn.Name = "newColumn"; // Название столбца
@@ -83,7 +86,6 @@ namespace diplom
                     Close();
             }
         }
-
         private void button4_Click(object sender, EventArgs e)
         {
             Enabled = false;
@@ -240,6 +242,7 @@ namespace diplom
 
         private void SearchAndHighlightRows(string searchText)
         {
+            dataGridView1.CurrentCell = null;
             // 1. Предварительная очистка выделения и проверка входных данных
             // Используем foreach для более чистого синтаксиса
             foreach (DataGridViewRow row in dataGridView1.Rows)
@@ -250,6 +253,8 @@ namespace diplom
             // Если строка поиска пуста, нет смысла продолжать
             if (string.IsNullOrEmpty(searchText))
             {
+                foreach (DataGridViewRow row in dataGridView1.Rows)
+                    row.Visible =true;
                 return;
             }
 
@@ -282,6 +287,14 @@ namespace diplom
                     row.Selected = true;
                     // Дополнительно: можно прокрутить к первой найденной строке
                     //dataGridView1.FirstDisplayedScrollingRowIndex = row.Index;
+                }
+                else
+                {
+                    //try
+                    //{
+                        row.Visible = false;
+                    //}
+                    //catch { }
                 }
             }
         }

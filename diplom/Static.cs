@@ -2,7 +2,7 @@
 
 namespace diplom
 {
-    static class Static
+    public class Static
     {
         public static string user = "Гость";
     }
