@@ -285,16 +285,11 @@ namespace diplom
                 if (foundInRow)
                 {
                     row.Selected = true;
-                    // Дополнительно: можно прокрутить к первой найденной строке
-                    //dataGridView1.FirstDisplayedScrollingRowIndex = row.Index;
+                    row.Visible = true;
                 }
                 else
                 {
-                    //try
-                    //{
                         row.Visible = false;
-                    //}
-                    //catch { }
                 }
             }
         }

@@ -1,18 +1,7 @@
-﻿using diplom.ta_ble;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Configuration;
+﻿using System;
 using System.Data;
-using System.Data.SqlClient;
-using System.Drawing;
 using System.Linq;
-using System.Runtime.Remoting.Metadata.W3cXsd2001;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
 namespace diplom
 {
@@ -28,6 +17,7 @@ namespace diplom
         private void button2_Click(object sender, EventArgs e)
         {
             avtohis();
+            Close();
         }
 
         private void avtohis()
@@ -37,7 +27,7 @@ namespace diplom
                 using (var context = new DBpodkl())
                 {
                     var users = context.Users.Where(o => o.Login == textBox1.Text && o.Password == textBox2.Text);
-                    if (users != null)
+                    if (users.Count() == 1)
                     {
                         MessageBox.Show("Вы вошли");
                         Static.user = textBox1.Text;
