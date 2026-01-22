@@ -1,14 +1,11 @@
 ﻿using diplom.Database_management;
-using diplom.ta_ble;
 using System;
-using System.Collections.Generic;
+using System.Collections;
 using System.Data;
 using System.Data.Entity.Core.Common.CommandTrees.ExpressionBuilder;
 using System.Drawing;
 using System.Linq;
-using System.Reflection;
 using System.Windows.Forms;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace diplom
 {
@@ -69,21 +66,6 @@ namespace diplom
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
-                //if (MessageBox.Show("Создать пользоватедя Login = \"maks\",Password = \"123\",", "Ошибка",
-                //    MessageBoxButtons.YesNo, MessageBoxIcon.Question) ==
-                //    DialogResult.Yes)
-                //    using (DBpodkl context = new DBpodkl())
-                //    {
-                //        User users = new User()
-                //        {
-                //            Login = "maks",
-                //            Password = "123",
-                //        };
-                //        context.Users.Add(users);
-                //        context.SaveChanges();
-                //    }
-                //else
-                //    Close();
             }
         }
         private void button4_Click(object sender, EventArgs e)
