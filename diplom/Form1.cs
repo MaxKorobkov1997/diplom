@@ -34,7 +34,7 @@ namespace diplom
                     else
                     {
                         add_bd.Add_jurnal(comboBox1.Text, comboBox2.Text, comboBox3.Text);
-                        otkritie();
+                        otkritie1();
                     }
                 }
                 else
@@ -46,13 +46,12 @@ namespace diplom
             }
         }
 
-        private void otkritie()
+        private void otkritie1()
         {
             try
             {
                 dataGridView1.Columns.Clear();
-                using (DBpodkl Joorn = new DBpodkl())
-                    dataGridView1.DataSource = Joorn.Jurnals.Select(e => new { e.Id, e.Name, e.Id_Neme, e.Fakultet, e.Id_Fakultet, e.VidGr, e.Id_VidGr }).ToList();
+                dataGridView1.DataSource = otkritie_tb.Otk_jurnal();
                 DataGridViewButtonColumn newColumn = new DataGridViewButtonColumn();
                 newColumn.HeaderText = "Новый столбец"; // Заголовок
                 newColumn.Name = "newColumn"; // Название столбца
@@ -67,23 +66,24 @@ namespace diplom
                 dataGridView1.Columns[6].HeaderText = "Id ввида группы";
                 dataGridView1.Columns[0].Width = 40;
             }
-            catch
+            catch (Exception ex)
             {
-                if (MessageBox.Show("Создать пользоватедя Login = \"maks\",Password = \"123\",", "Ошибка",
-                    MessageBoxButtons.YesNo, MessageBoxIcon.Question) ==
-                    DialogResult.Yes)
-                    using (DBpodkl context = new DBpodkl())
-                    {
-                        User users = new User()
-                        {
-                            Login = "maks",
-                            Password = "123",
-                        };
-                        context.Users.Add(users);
-                        context.SaveChanges();
-                    }
-                else
-                    Close();
+                MessageBox.Show(ex.Message);
+                //if (MessageBox.Show("Создать пользоватедя Login = \"maks\",Password = \"123\",", "Ошибка",
+                //    MessageBoxButtons.YesNo, MessageBoxIcon.Question) ==
+                //    DialogResult.Yes)
+                //    using (DBpodkl context = new DBpodkl())
+                //    {
+                //        User users = new User()
+                //        {
+                //            Login = "maks",
+                //            Password = "123",
+                //        };
+                //        context.Users.Add(users);
+                //        context.SaveChanges();
+                //    }
+                //else
+                //    Close();
             }
         }
         private void button4_Click(object sender, EventArgs e)
@@ -154,7 +154,7 @@ namespace diplom
                 {
                     Delit.Delit_jurnal(a);
                 }
-                otkritie();
+                otkritie1();
             }
             catch(Exception ex)
             {
@@ -168,7 +168,7 @@ namespace diplom
             Combobox("[dbo].[Students] ");
             Combobox("[dbo].[Fakultets] ");
             Combobox("[dbo].[Vids] ");
-            otkritie();
+            otkritie1();
             dataGridView1.Font = new Font("Microsoft Sans Serif", 14);
             comboBox1.DropDownStyle = ComboBoxStyle.DropDownList;
             comboBox2.DropDownStyle = ComboBoxStyle.DropDownList;
@@ -212,7 +212,7 @@ namespace diplom
             Combobox("[dbo].[Students] ");
             Combobox("[dbo].[Fakultets] ");
             Combobox("[dbo].[Vids] ");
-            otkritie();
+            otkritie1();
             label4.Text = Static.user;
         }
 

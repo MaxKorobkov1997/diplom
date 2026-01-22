@@ -37,8 +37,7 @@ namespace diplom
             try
             {
                 dataGridView1.Columns.Clear();
-                using (DBpodkl Joorn = new DBpodkl())
-                    dataGridView1.DataSource = Joorn.Fakultets.Select(e => new { e.Id, e.Fakultets }).ToList();
+                dataGridView1.DataSource = otkritie_tb.otk_faculteet();
                 DataGridViewButtonColumn newColumn = new DataGridViewButtonColumn();
                 newColumn.HeaderText = "Новый столбец"; // Заголовок
                 newColumn.Text = "Удалить";
