@@ -25,35 +25,12 @@ namespace diplom
                     MessageBox.Show("Вы вошли");
                     Static.user = textBox1.Text;
                     form1.label4.Text = Static.user;
+                    Close();
                 }
                 else
                     MessageBox.Show("Такого пользоваля нет", "Ошибка", MessageBoxButtons.OK);
             }
-            avtohis();
-            Close();
-        }
-
-        private void avtohis()
-        {
-            try
-            {
-                using (var context = new DBpodkl())
-                {
-                    var users = context.Users.Where(o => o.Login == textBox1.Text && o.Password == textBox2.Text);
-                    if (users.Count() > 0)
-                    {
-                        MessageBox.Show("Вы вошли");
-                        Static.user = textBox1.Text;
-                        form1.label4.Text =Static.user;
-                    }
-                    else
-                        MessageBox.Show("Такого пользоваля нет", "Ошибка", MessageBoxButtons.OK);
-                }
-            }
-            catch(Exception ex)  
-            {
-                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK);
-            }
+            
         }
 
         private void Form5_Load(object sender, EventArgs e)
