@@ -37,8 +37,9 @@ namespace diplom
         {
             using (var context = new DBpodkl())
             {
-                var users = context.Vids.Select(o => new { o.Id, o.vid }).ToList();
-                if (users.Count() < 1) button1.Enabled = true;
+                int users = context.Users.Count();
+                MessageBox.Show(users.ToString());
+                if (users == 0) button1.Enabled = true;
                 else button1.Enabled = false;
             }
         }
