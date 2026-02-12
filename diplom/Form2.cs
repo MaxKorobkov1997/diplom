@@ -20,23 +20,24 @@ namespace diplom
 
         private void button1_Click(object sender, EventArgs e)
         {
+            string path = textBox1.Text + " " + textBox2.Text + " " + textBox3.Text;
             try
             {
                 if (Static.user != "Гость")
                 {
-                    string path;
-                    path = textBox1.Text + " " + textBox2.Text + " " + textBox3.Text;
-                    add_bd.Add_student(path, pasp, soclic);
-                    if (!Directory.Exists(path))
-                        Directory.CreateDirectory(path);
-                    try
+                    if (add_bd.Add_student(path, pasp, soclic))
                     {
-                        File.Copy(pathpasp, "documents"+"/"+ path +"/"+ pasp);
-                        if (pathsoclic!= "")
-                            File.Copy(pathsoclic, "documents" + "/" + path +"/"+ soclic);
+                        if (!Directory.Exists(path))
+                            Directory.CreateDirectory(path);
+                        try
+                        {
+                            File.Copy(pathpasp, "documents" + "/" + path + "/" + pasp);
+                            if (pathsoclic != "")
+                                File.Copy(pathsoclic, "documents" + "/" + path + "/" + soclic);
+                        }
+                        catch { }
+                        otkritie();
                     }
-                    catch { }
-                    otkritie();
                     
                 }
                 else

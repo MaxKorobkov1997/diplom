@@ -1,5 +1,6 @@
 ﻿using diplom.ta_ble;
 using System.Linq;
+using System.Windows.Forms;
 
 namespace diplom.Database_management
 {
@@ -23,18 +24,27 @@ namespace diplom.Database_management
             }
         }
 
-        public static void Add_student(string fio, string pasport, string Document_Soc_Gr = "none")
+        public static bool Add_student(string fio, string pasport, string Document_Soc_Gr = "none")
         {
             using (var context = new DBpodkl())
             {
-                var Joorn = new Student()
+                var users = context.Students.Where(o => o.Name == fio).Count();
+                if (users == 0)
                 {
-                    Name = fio,
-                    Pasport = pasport,
-                    Document_Soc_Gr=Document_Soc_Gr
-                };
-                context.Students.Add(Joorn);
-                context.SaveChanges();
+                    var Joorn = new Student()
+                    {
+                        Name = fio,
+                        Pasport = pasport,
+                        Document_Soc_Gr = Document_Soc_Gr
+                    };
+
+                    context.Students.Add(Joorn);
+                    context.SaveChanges();
+                    return true;
+                }
+                else
+                    MessageBox.Show("такой пользватель уже существует");
+                return false;
             }
         }
 
