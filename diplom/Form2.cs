@@ -3,13 +3,16 @@ using diplom.ta_ble;
 using System;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Windows.Forms;
+using System.Xml.Linq;
 
 namespace diplom
 {
     public partial class Form2 : Form
     {
+        string pathpasp, pathsoclic, pasp, soclic;
         public Form2()
         {
             InitializeComponent();
@@ -21,7 +24,18 @@ namespace diplom
             {
                 if (Static.user != "Гость")
                 {
-                    add_bd.Add_student(textBox1.Text + " " + textBox2.Text + " " + textBox3.Text);
+                    string path;
+                    path = textBox1.Text + " " + textBox2.Text + " " + textBox3.Text;
+                    add_bd.Add_student(path, pasp, soclic);
+                    if (!Directory.Exists(path))
+                        Directory.CreateDirectory(path);
+                    try
+                    {
+                        File.Copy(pathpasp, "documents"+"/"+ path +"/"+ pasp);
+                        if (pathsoclic!= "")
+                            File.Copy(pathsoclic, "documents" + "/" + path +"/"+ soclic);
+                    }
+                    catch { }
                     otkritie();
                     
                 }
@@ -61,25 +75,29 @@ namespace diplom
         {
             try
             {
-                int a = Convert.ToInt32(dataGridView1.Rows[e.RowIndex].Cells[0].Value.ToString());
-                if (MessageBox.Show("Удалить эту строку " + a, "Удаление", MessageBoxButtons.YesNo, MessageBoxIcon.Question) ==
-                    DialogResult.Yes)
+                if (Static.user != "Гость")
+                if (((DataGridView)sender).Columns[e.ColumnIndex] is DataGridViewButtonColumn && e.RowIndex >= 0)
                 {
-                    Delit.Delit_student(a);
+                    int a = Convert.ToInt32(dataGridView1.Rows[e.RowIndex].Cells[0].Value.ToString());
                     if (MessageBox.Show("Удалить эту строку " + a, "Удаление", MessageBoxButtons.YesNo, MessageBoxIcon.Question) ==
-                DialogResult.Yes)
-                        while (true)
-                        {
-                            using (var context = new DBpodkl())
+                        DialogResult.Yes)
+                    {
+                        Delit.Delit_student(a);
+                        if (MessageBox.Show("Удалить эту строку " + a + " в таблице журнал", "Удаление", MessageBoxButtons.YesNo, MessageBoxIcon.Question) ==
+                    DialogResult.Yes)
+                            while (true)
                             {
-                                var users1 = context.Jurnals.Where(o => o.Id_Neme == a).FirstOrDefault();
-                                if (users1 == null)
-                                    break;
-                                Delit.Delit_jurnal(users1.Id);
+                                using (var context = new DBpodkl())
+                                {
+                                    var users1 = context.Jurnals.Where(o => o.Id_Neme == a).FirstOrDefault();
+                                    if (users1 == null)
+                                        break;
+                                    Delit.Delit_jurnal(users1.Id);
+                                }
                             }
-                        }
+                    }
+                    otkritie();
                 }
-                otkritie();
             }
             catch
             {
@@ -96,6 +114,26 @@ namespace diplom
         private void button2_Click(object sender, EventArgs e)
         {
             Close();
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                soclic = Path.GetFileName(openFileDialog.FileName);
+                pathsoclic = openFileDialog.FileName;
+            }
+        }
+
+        private void button2_Click_1(object sender, EventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                pasp = Path.GetFileName(openFileDialog.FileName);
+                pathpasp = openFileDialog.FileName;
+            }
         }
     }
 }

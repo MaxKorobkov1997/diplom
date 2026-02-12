@@ -56,27 +56,31 @@ namespace diplom
         {
             try
             {
-                int a = Convert.ToInt32(dataGridView1.Rows[e.RowIndex].Cells[0].Value.ToString());
-                if (MessageBox.Show("Удалить эту строку " + a, "Удаление", MessageBoxButtons.YesNo, MessageBoxIcon.Question) ==
-                    DialogResult.Yes)
+                if (Static.user != "Гость")
+                    if (((DataGridView)sender).Columns[e.ColumnIndex] is DataGridViewButtonColumn && e.RowIndex >= 0)
                 {
-                    Delit.Delit_faculteet(a);
+                    int a = Convert.ToInt32(dataGridView1.Rows[e.RowIndex].Cells[0].Value.ToString());
                     if (MessageBox.Show("Удалить эту строку " + a, "Удаление", MessageBoxButtons.YesNo, MessageBoxIcon.Question) ==
-                DialogResult.Yes)
+                        DialogResult.Yes)
+                    {
+                        Delit.Delit_faculteet(a);
+                        if (MessageBox.Show("Удалить эту строку " + a + " в таблице журнал", "Удаление", MessageBoxButtons.YesNo, MessageBoxIcon.Question) ==
+                    DialogResult.Yes)
                         {
-                        while (true)
-                        {
-                            using (DBpodkl context = new DBpodkl())
+                            while (true)
                             {
-                                Jurnal users1 = context.Jurnals.Where(o => o.Id_Fakultet == a).FirstOrDefault();
-                                if (users1 == null)
-                                    break;
-                                Delit.Delit_jurnal(users1.Id);
+                                using (DBpodkl context = new DBpodkl())
+                                {
+                                    Jurnal users1 = context.Jurnals.Where(o => o.Id_Fakultet == a).FirstOrDefault();
+                                    if (users1 == null)
+                                        break;
+                                    Delit.Delit_jurnal(users1.Id);
+                                }
                             }
                         }
                     }
+                    otkritie();
                 }
-                otkritie();
             }
             catch
             {

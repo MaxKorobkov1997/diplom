@@ -56,26 +56,30 @@ namespace diplom
         {
             try
             {
-                int a = Convert.ToInt32(dataGridView1.Rows[e.RowIndex].Cells[0].Value.ToString());
-                if (MessageBox.Show("Удалить эту строку " + a, "Удаление", MessageBoxButtons.YesNo, MessageBoxIcon.Question) ==
-                    DialogResult.Yes)
+                if(Static.user != "Гость")
+                if (((DataGridView)sender).Columns[e.ColumnIndex] is DataGridViewButtonColumn && e.RowIndex >= 0)
                 {
-                    Delit.Delit_vidgr(a);
+                    int a = Convert.ToInt32(dataGridView1.Rows[e.RowIndex].Cells[0].Value.ToString());
                     if (MessageBox.Show("Удалить эту строку " + a, "Удаление", MessageBoxButtons.YesNo, MessageBoxIcon.Question) ==
-                DialogResult.Yes)
-                        while (true)
-                        {
-                            using (var context = new DBpodkl())
+                        DialogResult.Yes)
+                    {
+                        Delit.Delit_vidgr(a);
+                        if (MessageBox.Show("Удалить эту строку " + a + " в таблице журнал", "Удаление", MessageBoxButtons.YesNo, MessageBoxIcon.Question) ==
+                    DialogResult.Yes)
+                            while (true)
                             {
-                                var users1 = context.Jurnals.Where(o => o.Id_VidGr == a).FirstOrDefault();
-                                if (users1 == null)
-                                    break;
-                                Delit.Delit_jurnal(users1.Id);
+                                using (var context = new DBpodkl())
+                                {
+                                    var users1 = context.Jurnals.Where(o => o.Id_VidGr == a).FirstOrDefault();
+                                    if (users1 == null)
+                                        break;
+                                    Delit.Delit_jurnal(users1.Id);
+                                }
                             }
-                        }
-                    
+
+                    }
+                    otkritie();
                 }
-                otkritie();
             }
             catch
             {

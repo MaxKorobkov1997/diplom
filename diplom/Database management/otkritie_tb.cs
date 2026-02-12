@@ -23,7 +23,7 @@ namespace diplom.Database_management
             DataTable dt = new DataTable();
             using (var context = new DBpodkl())
             {
-                dt = ToDataTable(context.Students.Select(e => new { e.Id, e.Name }).ToList());
+                dt = ToDataTable(context.Students.Select(e => new { e.Id, e.Name, e.Pasport, e.Document_Soc_Gr }).ToList());
             }
             return dt;
         }

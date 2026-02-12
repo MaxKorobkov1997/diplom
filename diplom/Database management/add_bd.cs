@@ -23,13 +23,15 @@ namespace diplom.Database_management
             }
         }
 
-        public static void Add_student(string fio)
+        public static void Add_student(string fio, string pasport, string Document_Soc_Gr = "none")
         {
             using (var context = new DBpodkl())
             {
                 var Joorn = new Student()
                 {
-                    Name = fio
+                    Name = fio,
+                    Pasport = pasport,
+                    Document_Soc_Gr=Document_Soc_Gr
                 };
                 context.Students.Add(Joorn);
                 context.SaveChanges();

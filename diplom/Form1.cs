@@ -4,6 +4,7 @@ using System.Collections;
 using System.Data;
 using System.Data.Entity.Core.Common.CommandTrees.ExpressionBuilder;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -11,6 +12,7 @@ namespace diplom
 {
     public partial class Form1 : Form
     {
+        string path = "documents";
         public Form1()
         {
             InitializeComponent();
@@ -130,13 +132,16 @@ namespace diplom
         {
             try
             {
-                int a = Convert.ToInt32(dataGridView1.Rows[e.RowIndex].Cells[0].Value.ToString());
-                if (MessageBox.Show("Удалить эту строку " + a, "Удаление", MessageBoxButtons.YesNo, MessageBoxIcon.Question) ==
-                    DialogResult.Yes)
+                if (((DataGridView)sender).Columns[e.ColumnIndex] is DataGridViewButtonColumn && e.RowIndex >= 0)
                 {
-                    Delit.Delit_jurnal(a);
+                    int a = Convert.ToInt32(dataGridView1.Rows[e.RowIndex].Cells[0].Value.ToString());
+                    if (MessageBox.Show("Удалить эту строку " + a, "Удаление", MessageBoxButtons.YesNo, MessageBoxIcon.Question) ==
+                        DialogResult.Yes)
+                    {
+                        Delit.Delit_jurnal(a);
+                    }
+                    otkritie1();
                 }
-                otkritie1();
             }
             catch(Exception ex)
             {
@@ -146,6 +151,8 @@ namespace diplom
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            if (!Directory.Exists(path))
+                Directory.CreateDirectory(path);
             label4.Text = Static.user;
             Combobox("[dbo].[Students] ");
             Combobox("[dbo].[Fakultets] ");

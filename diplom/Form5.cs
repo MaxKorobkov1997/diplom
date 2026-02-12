@@ -19,7 +19,7 @@ namespace diplom
         {
             using (var context = new DBpodkl())
             {
-                var users = context.Vids.Select(o => new { o.Id, o.vid }).ToList();
+                var users = context.Users.Where(o => o.Login == textBox1.Text && o.Password == textBox2.Text).ToList();
                 if (users.Count() > 0)
                 {
                     MessageBox.Show("Вы вошли");

@@ -63,7 +63,7 @@
     <Compile Include="Database management\add_bd.cs" />
     <Compile Include="Database management\Delit.cs" />
     <Compile Include="Database management\otkritie_tb.cs" />
-    <Compile Include="model\DBpodkl.cs" />
+    <Compile Include="Database management\DBpodkl.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
